@@ -113,11 +113,6 @@ export class WishesService {
   async copyWish(id: number, user: User): Promise<Wish> {
     const wish = await this.findOne({ where: { id } });
 
-    const isAlreadyAdded = (await this.wishesRepository.findOne({ where: { owner: { id: user.id }, name: wish.name }}))
-      ? true
-      : false;
-    if (isAlreadyAdded) throw new ConflictException('Вы уже копировали себе этот подарок');
-
     const copiedWish = this.wishesRepository.create({
       copied: 0,
       description: wish.description,
